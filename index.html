@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Obrigado pela Visita</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 32px 24px;
+      max-width: 440px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .logo { text-align: center; margin-bottom: 20px; }
+    .logo h1 { font-size: 20px; color: #333; }
+    .logo p { font-size: 14px; color: #666; margin-top: 4px; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 14px; font-weight: 600; color: #444; margin-bottom: 4px; }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: border-color 0.2s;
+      outline: none;
+      background: #fafafa;
+    }
+    input:focus, select:focus { border-color: #667eea; background: #fff; }
+    select { appearance: none; background: #fafafa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 12px center; }
+    .inline-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .inline-group label.option {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      transition: all 0.2s;
+      background: #fafafa;
+      color: #666;
+    }
+    .inline-group input[type="radio"] { display: none; }
+    .inline-group input[type="radio"]:checked + label.option {
+      background: #667eea;
+      color: white;
+      border-color: #667eea;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+    }
+    button:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(102,126,234,0.4); }
+    button:active { transform: translateY(0); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .spinner { display: none; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin: 0 auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .success { display: none; text-align: center; padding: 20px 0; }
+    .success h2 { color: #28a745; margin-bottom: 8px; }
+    .success p { color: #666; font-size: 15px; line-height: 1.5; }
+    .error-msg { color: #dc3545; font-size: 13px; display: none; margin-top: 4px; }
+    .required { color: #dc3545; }
+    .footer { text-align: center; margin-top: 20px; font-size: 12px; color: #aaa; }
+    .config-banner { background: #fff3cd; border: 1px solid #ffc107; padding: 10px; border-radius: 8px; margin-bottom: 16px; font-size: 12px; color: #856404; display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="config-banner" id="configBanner">
+      ⚠️ AVISO: Webhook ainda não configurado. Verifique a linha 172 do código.
+    </div>
+
+    <div class="logo">
+      <h1>Igreja Metodista Monte Alegre</h1>
+      <p>Que bom ter você aqui!</p>
+    </div>
+
+    <form id="visitaForm">
+      <div class="form-group">
+        <label>Nome completo <span class="required">*</span></label>
+        <input type="text" name="nome" id="nome" required placeholder="Seu nome" />
+      </div>
+
+      <div class="form-group">
+        <label>WhatsApp <span class="required">*</span></label>
+        <input type="tel" name="whatsapp" id="whatsapp" required placeholder="Ex: 11999999999" />
+      </div>
+
+      <div class="form-group">
+        <label>Bairro</label>
+        <input type="text" name="bairro" id="bairro" placeholder="Onde você mora" />
+      </div>
+
+      <div class="form-group">
+        <label>É a primeira vez na igreja? <span class="required">*</span></label>
+        <div class="inline-group">
+          <input type="radio" name="primeiraVez" id="pvSim" value="sim" required />
+          <label class="option" for="pvSim">Sim</label>
+          <input type="radio" name="primeiraVez" id="pvNao" value="nao" />
+          <label class="option" for="pvNao">Não</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Deseja receber oração?</label>
+        <div class="inline-group">
+          <input type="radio" name="pedidoOracao" id="poSim" value="sim" />
+          <label class="option" for="poSim">Sim</label>
+          <input type="radio" name="pedidoOracao" id="poNao" value="nao" checked />
+          <label class="option" for="poNao">Não</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Tem interesse em participar de uma célula?</label>
+        <div class="inline-group">
+          <input type="radio" name="interesseCelula" id="icSim" value="sim" />
+          <label class="option" for="icSim">Sim</label>
+          <input type="radio" name="interesseCelula" id="icNao" value="nao" checked />
+          <label class="option" for="icNao">Não</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Melhor dia/horário para contato</label>
+        <select name="melhorHorario">
+          <option value="">Selecione</option>
+          <option value="Manhã">Manhã (8h-12h)</option>
+          <option value="Tarde">Tarde (12h-18h)</option>
+          <option value="Noite">Noite (18h-22h)</option>
+          <option value="Indiferente">Indiferente</option>
+        </select>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <button type="submit" id="btnEnviar">
+        <span id="btnText">Enviar</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+    </form>
+
+    <div class="success" id="successMsg">
+      <h2>Obrigado!</h2>
+      <p>Recebemos sua visita com muito carinho.<br />Em breve entraremos em contato.<br /><br /><strong>Deus abençoe sua vida!</strong></p>
+    </div>
+
+    <div class="footer">
+      Igreja Metodista Monte Alegre
+    </div>
+  </div>
+
+  <script>
+    // ⚠️ CONFIGURAÇÃO NECESSÁRIA
+    // Copie a URL do webhook do n8n (node "Receber Formulario")
+    // Troque a linha abaixo pela sua URL
+    const WEBHOOK_URL = 'https://igreja-acolhimento-5445.loca.lt/webhook/visita';
+
+    document.getElementById('visitaForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btnEnviar');
+      const text = document.getElementById('btnText');
+      const spinner = document.getElementById('spinner');
+      const errorMsg = document.getElementById('errorMsg');
+      const form = document.getElementById('visitaForm');
+
+      text.style.display = 'none';
+      spinner.style.display = 'block';
+      btn.disabled = true;
+      errorMsg.style.display = 'none';
+
+      try {
+        const formData = new FormData(form);
+        const data = {
+          nome: formData.get('nome'),
+          whatsapp: formData.get('whatsapp'),
+          bairro: formData.get('bairro'),
+          primeiraVez: formData.get('primeiraVez'),
+          pedidoOracao: formData.get('pedidoOracao'),
+          interesseCelula: formData.get('interesseCelula'),
+          melhorHorario: formData.get('melhorHorario'),
+          timestamp: new Date().toISOString()
+        };
+
+        const res = await fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (!res.ok) throw new Error('Erro ao enviar');
+
+        form.style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      } catch (err) {
+        console.error('Erro:', err);
+        errorMsg.textContent = 'Erro ao enviar. Tente novamente.';
+        errorMsg.style.display = 'block';
+        text.style.display = 'inline';
+        spinner.style.display = 'none';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
